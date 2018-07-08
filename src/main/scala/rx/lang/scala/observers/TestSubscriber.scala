@@ -47,7 +47,7 @@ class TestSubscriber[T] private[scala](jTestSubscriber: JTestSubscriber[T]) exte
    *
    * @return a sequence of the `Throwable`s that were passed to the [[Subscriber.onError]] method
    */
-  def getOnErrorEvents: Seq[Throwable] = {
+  def getOnErrorEvents: _root_.scala.collection.Seq[Throwable] = {
     jTestSubscriber.getOnErrorEvents().asScala
   }
 
@@ -56,7 +56,7 @@ class TestSubscriber[T] private[scala](jTestSubscriber: JTestSubscriber[T]) exte
    *
    * @return a sequence of items observed by this [[Subscriber]], in the order in which they were observed
    */
-  def getOnNextEvents: Seq[T] = {
+  def getOnNextEvents: _root_.scala.collection.Seq[T] = {
     jTestSubscriber.getOnNextEvents().asScala
   }
 

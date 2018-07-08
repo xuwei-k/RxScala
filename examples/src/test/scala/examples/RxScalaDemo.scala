@@ -188,13 +188,13 @@ class RxScalaDemo extends JUnitSuite {
 
   @Test def tumblingBufferExample(): Unit = {
     val o = Observable.from(1 to 18)
-    o.tumblingBuffer(5).subscribe((l: Seq[Int]) => println(l.mkString("[", ", ", "]")))
+    o.tumblingBuffer(5).subscribe((l: _root_.scala.collection.Seq[Int]) => println(l.mkString("[", ", ", "]")))
   }
 
   @Test def tumblingBufferExample2(): Unit = {
     val o = Observable.from(1 to 18).zip(Observable.interval(100 millis)).map(_._1)
     val boundary = Observable.interval(500 millis)
-    o.tumblingBuffer(boundary).toBlocking.foreach((l: Seq[Int]) => println(l.mkString("[", ", ", "]")))
+    o.tumblingBuffer(boundary).toBlocking.foreach((l: _root_.scala.collection.Seq[Int]) => println(l.mkString("[", ", ", "]")))
   }
 
   @Test def slidingBufferExample(): Unit = {
@@ -213,7 +213,7 @@ class RxScalaDemo extends JUnitSuite {
 
   @Test def slidingBufferExample3(): Unit = {
     val o = Observable.from(1 to 18).zip(Observable.interval(100 millis)).map(_._1)
-    o.slidingBuffer(500 millis, 200 millis).toBlocking.foreach((l: Seq[Int]) => println(l.mkString("[", ", ", "]")))
+    o.slidingBuffer(500 millis, 200 millis).toBlocking.foreach((l: _root_.scala.collection.Seq[Int]) => println(l.mkString("[", ", ", "]")))
   }
 
   @Test def tumblingExample(): Unit = {

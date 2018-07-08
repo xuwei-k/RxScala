@@ -4201,9 +4201,9 @@ trait Observable[+T]
    * @return an Observable that emits a single item: a `Map` containing the mapped items from the source
    *         Observable
    */
-  def to[M[_, _], K, V](keySelector: T => K, valueSelector: T => V)(implicit cbf: CanBuildFrom[Nothing, (K, V), M[K, V]]): Observable[M[K, V]] = {
+  def to[M[_, _], K, V](keySelector: T => K, valueSelector: T => V)(implicit cbf: _root_.scala.collection.Factory[(K, V), M[K, V]]): Observable[M[K, V]] = {
     val stateFactory = new rx.functions.Func0[mutable.Builder[(K, V), M[K, V]]] {
-      override def call(): mutable.Builder[(K, V), M[K, V]] = cbf()
+      override def call(): mutable.Builder[(K, V), M[K, V]] = cbf.newBuilder
     }
     val collector = new rx.functions.Action2[mutable.Builder[(K, V), M[K, V]], T] {
       override def call(builder: mutable.Builder[(K, V), M[K, V]], t: T): Unit = builder += keySelector(t) -> valueSelector(t)
@@ -4494,9 +4494,9 @@ trait Observable[+T]
    * @return an Observable that emits a single item, a collection containing all of the items emitted by
    *         the source Observable.
    */
-  def to[Col[_]](implicit cbf: CanBuildFrom[Nothing, T, Col[T@uncheckedVariance]]): Observable[Col[T@uncheckedVariance]] = {
+  def to[Col[_]](implicit cbf: _root_.scala.collection.Factory[T, Col[T@uncheckedVariance]]): Observable[Col[T@uncheckedVariance]] = {
     val stateFactory = new rx.functions.Func0[mutable.Builder[T, Col[T]]] {
-      override def call(): mutable.Builder[T, Col[T]] = cbf()
+      override def call(): mutable.Builder[T, Col[T]] = cbf.newBuilder
     }
     val collector = new rx.functions.Action2[mutable.Builder[T, Col[T]], T] {
       override def call(builder: mutable.Builder[T, Col[T]], t: T): Unit = builder += t
@@ -4863,7 +4863,7 @@ object Observable {
   import rx.lang.scala.subjects.AsyncSubject
 
   private[scala]
-  def jObsOfListToScObsOfSeq[T](jObs: rx.Observable[_ <: java.util.List[T]]): Observable[Seq[T]] = {
+  def jObsOfListToScObsOfSeq[T](jObs: rx.Observable[_ <: java.util.List[T]]): Observable[_root_.scala.collection.Seq[T]] = {
     val oScala1: Observable[java.util.List[T]] = new Observable[java.util.List[T]]{ val asJavaObservable = jObs }
     oScala1.map((lJava: java.util.List[T]) => lJava.asScala)
   }
@@ -5173,14 +5173,14 @@ object Observable {
    *            An Observable emitting N source Observables
    * @return an Observable that emits the zipped Seqs
    */
-  def zip[T](observables: Observable[Observable[T]]): Observable[Seq[T]] = {
-    val f: FuncN[Seq[T]] = (args: Seq[java.lang.Object]) => {
+  def zip[T](observables: Observable[Observable[T]]): Observable[_root_.scala.collection.Seq[T]] = {
+    val f: FuncN[_root_.scala.collection.Seq[T]] = (args: _root_.scala.collection.Seq[java.lang.Object]) => {
       val asSeq: Seq[Object] = args.toSeq
-      asSeq.asInstanceOf[Seq[T]]
+      asSeq.asInstanceOf[_root_.scala.collection.Seq[T]]
     }
     val list = observables.map(_.asJavaObservable).asJavaObservable
     val o = rx.Observable.zip(list, f)
-    toScalaObservable[Seq[T]](o)
+    toScalaObservable[_root_.scala.collection.Seq[T]](o)
   }
 
   /**

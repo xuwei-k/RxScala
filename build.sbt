@@ -10,22 +10,20 @@ lazy val examples = project in file("examples") dependsOn (root % "test->test;co
   )
 )
 
-scalacOptions in ThisBuild := Seq("-feature", "-unchecked", "-deprecation", "-encoding", "utf8", "-Xfatal-warnings")
+scalacOptions in ThisBuild := Seq("-feature", "-unchecked", "-deprecation", "-encoding", "utf8")
 
 scalaVersion in ThisBuild := "2.12.6"
 
-crossScalaVersions in ThisBuild := Seq("2.10.7", "2.11.12", "2.12.6")
+crossScalaVersions in ThisBuild := Seq("2.10.7", "2.11.12", "2.12.6", "2.13.0-M4")
 
 parallelExecution in Test := false
 
 libraryDependencies ++= {
-  // Scalatest 3.0.0 supports 2.12.0 but it drops Scala 2.10 support. So just use 2.2.6 for Scala 2.10.
-  val scalatestVersion = if (scalaVersion.value.startsWith("2.10")) "2.2.6" else "3.0.0"
   Seq(
     "io.reactivex" % "rxjava" % "1.2.4",
     "org.mockito" % "mockito-core" % "1.9.5" % "test",
     "junit" % "junit" % "4.11" % "test",
-    "org.scalatest" %% "scalatest" % scalatestVersion % "test")
+    "org.scalatest" %% "scalatest" % "3.0.6-SNAP1" % "test")
 }
 
 // Set up the doc mappings
